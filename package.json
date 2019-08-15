@@ -1,0 +1,27 @@
+{
+  "name": "teregalo",
+  "version": "1.0.0",
+  "description": "Prueba de LucaSafe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheAlejandRo/TeRegalo.git"
+  },
+  "keywords": [
+    "Prueba",
+    "LucaSafe",
+    "PEAN"
+  ],
+  "author": "Alejandro Caal",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/TheAlejandRo/TeRegalo/issues"
+  },
+  "homepage": "https://github.com/TheAlejandRo/TeRegalo#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
