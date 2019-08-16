@@ -1,10 +1,9 @@
-const express = require('express');
-const morgan = require('morgan'); //Eliminar módulo antes de la versión final para LucaSafe
+const express = require("express");
+const morgan = require("morgan"); //Eliminar módulo antes de la versión final para LucaSafe
 const app = express();
 
-const { conexion } = require('./DB');
+const { conn } = require('./DB.js');
 
-console.log(conexion)
 //Configuraciones
 app.set('port', process.env.PORT || 3000);
 
