@@ -4,11 +4,12 @@ const app = express();
 
 const { conexion } = require('./DB');
 
+console.log(conexion)
 //Configuraciones
 app.set('port', process.env.PORT || 3000);
 
 //Conectores
-app.use(morgan('Rserver'));
+app.use(morgan('Rserver'));  //Eliminar dependencia de morgan
 app.use(express.json());
 
 //Rutas
