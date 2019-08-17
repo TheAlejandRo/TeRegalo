@@ -1,6 +1,6 @@
 const express = require('express');
 const ruta = express.Router();
-const usuarios = require('../Controladores/tarjeta.controlador');
+const usuarios = require('../Controladores/tarjetas.controlador');
 
 ruta.get('/tarjetas', usuarios.obtenerTarjetas);
 ruta.post('/tarjeta/nueva', usuarios.crearTarjeta);
