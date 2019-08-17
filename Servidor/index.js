@@ -12,7 +12,7 @@ app.use(morgan('Rserver'));  //Eliminar dependencia de morgan
 app.use(express.json());
 
 //Rutas
-app.use('/API/all', require('./Rutas/usuarios.rutas'));
+app.use(require('./Rutas/tarjeta.rutas'));
 
 //Inicialización de servidor
 app.listen(app.get('port'), () => {
