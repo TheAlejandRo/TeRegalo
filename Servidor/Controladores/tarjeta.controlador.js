@@ -2,7 +2,7 @@ const ControlU = {};
 const cadenaConn = process.env.DATABASE_URL || 'postgres://postgres:DevSystem@127.0.0.1:5433/TeRegalo';
 const { Client } = require('pg');
 
-ControlU.obtenerUsuarios = async (peticion, respuesta) => {
+ControlU.obtenerTarjetas = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
     const consulta = 'SELECT * FROM tbtarjetas';
 
@@ -20,7 +20,7 @@ ControlU.obtenerUsuarios = async (peticion, respuesta) => {
             .then(() => conn.end());
 };
 
-ControlU.crearUsuario = async (peticion, respuesta) => {
+ControlU.crearTarjeta = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
     const data = {
         tarjeta: peticion.body.ntarjeta,
@@ -49,7 +49,7 @@ ControlU.crearUsuario = async (peticion, respuesta) => {
             .then(() => conn.end());
 };
 
-ControlU.obtenerUsuario = async (peticion, respuesta) => {
+ControlU.obtenerTarjeta = async (peticion, respuesta) => {
         const conn = new Client(cadenaConn);
         const { tarjeta } = peticion.params
         const consulta = 'SELECT * FROM tbtarjetas WHERE ntarjeta=($1)';
@@ -71,7 +71,7 @@ ControlU.obtenerUsuario = async (peticion, respuesta) => {
                 .then(() => conn.end());
 };
 
-ControlU.actualizarUsuario = async (peticion, respuesta) => {
+ControlU.actualizarTarjeta = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
     const { tarjeta } = peticion.params
     const consulta = 'UPDATE ';
@@ -93,7 +93,7 @@ ControlU.actualizarUsuario = async (peticion, respuesta) => {
             .then(() => conn.end());
 };
 
-ControlU.eliminarUsuario = async (peticion, respuesta) => {
+ControlU.eliminarTarjeta = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
     const consulta = 'SELECT * FROM tbtarjetas';
 
