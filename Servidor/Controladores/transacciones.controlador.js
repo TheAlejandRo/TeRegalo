@@ -31,6 +31,7 @@ ControlTra.crearTransaccion = async (peticion, respuesta) => {
         fraKey: peticion.body.fraKey
     }
     const insert = 'INSERT INTO tbtransacciones(idcajero, ntarjeta, gasto, fechaT, horaT) VALUES($1, $2, $3, $4, $5);';
+    const consulta = 'SELECT "fraKey" FROM tbtarjetas WHERE ntarjeta=$1';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -39,23 +40,11 @@ ControlTra.crearTransaccion = async (peticion, respuesta) => {
                 respuesta.status(500).json({success: false, data: err})
             });
 
-    await conn
-        .query('SELECT "fraKey" FROM tbtarjetas WHERE ntarjeta=($1);', [data.ntarjeta])
+    conn
+        .query(consulta, [data.ntarjeta])
         .then(res => {
             const clave = res.rows;
-            if (clave == data.fraKey) {
-                conn
-                    .query(insert, [data.idcajero, ntarjeta, gasto, fechaT, horaT])
-                    .then(result => respuesta.json(respuesta.status(200).json({success: true, data: 'Transacción exitosa'})))
-                    .catch(e => {
-                            console.error('Error al realizar la transacción: ',e.stack)
-                            respuesta.status(500).json({success: false, data: 'No se pudo realizar la transacción: ',e})
-                        })
-                    .then(() => conn.end());
-            } else {
-                console.log('Las frases no son iguales');
-                respuesta.json(respuesta.status(200).json({success: true, data: 'Transacción exitosa'}));
-            }
+            console.log(clave);    
         })
         .catch(e => {
             console.error('Error al insertar verificar la frase clave: ',e.stack)
