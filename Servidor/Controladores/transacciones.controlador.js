@@ -42,13 +42,13 @@ ControlTra.crearTransaccion = async (peticion, respuesta) => {
     await conn
         .query('SELECT "fraKey" FROM tbtarjetas WHERE ntarjeta=($1);', [data.ntarjeta])
         .then(res => {
-            const clave = res.rows
+            const clave = res.rows;
             if (clave == data.fraKey) {
                 conn
                     .query(insert, [data.idcajero, ntarjeta, gasto, fechaT, horaT])
                     .then(result => respuesta.json(respuesta.status(200).json({success: true, data: 'Transacción exitosa'})))
                     .catch(e => {
-                            console.error('Error al insertar un nuevo socio: ',e.stack)
+                            console.error('Error al realizar la transacción: ',e.stack)
                             respuesta.status(500).json({success: false, data: 'No se pudo realizar la transacción: ',e})
                         })
                     .then(() => conn.end());

@@ -1,1 +1,41 @@
-<p>cajeros works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col s5">
+            <div class="card">
+                <div class="card-content">
+                    <form #AddC="ngForm" (ngSubmit)="AgregarCajero(AddC)">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" name="idcajero" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.idcajero" placeholder="Introduce tu ID">
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="text" name="cajeroUser" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.cajeroUser" placeholder="Introduce tu usuario">
+                            </div>
+                            <div class="input-field col s12">
+                                    <input type="text" name="nombres" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.nombres" placeholder="Introduce tus nombres">
+                            </div>
+                            <div class="input-field col s12">
+                                    <input type="text" name="apellidos" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.apellidos" placeholder="Introduce tus apellidos">
+                            </div>
+                            <div class="input-field col s12">
+                                    <input type="text" name="telefono" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.telefono" placeholder="Introduce tus telefono">
+                            </div>
+                            <div class="input-field col s12">
+                                    <input type="text" name="idsucursal" #nombre="ngModel" [(ngModel)]="cajerosService.selecCajeros.idsucursal" placeholder="Introduce el ID de tu sucursal">
+                            </div>
+                            <div class="card-action">
+                                <div class="input-field col s12">
+                                    <button class="btn right">Aceptar</button>
+                                    <button class="btn left" (click)="borrarDatos(AddC)">Borrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col s7">
+
+        </div>
+    </div>
+</div>

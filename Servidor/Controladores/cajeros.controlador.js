@@ -29,7 +29,7 @@ ControlCaj.crearCajero = async (peticion, respuesta) => {
         telefono: peticion.body.telefono,
         idsucursal: peticion.body.idsucursal
     }
-    const insert = 'INSERT INTO tbcajeros(cajeroUser, nombres, apellidos, telefono, idsucursal) VALUES($1, $2, $3, $4, $5);';
+    const insert = 'INSERT INTO tbcajeros("cajeroUser", nombres, apellidos, telefono, idsucursal) VALUES($1, $2, $3, $4, $5)';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
