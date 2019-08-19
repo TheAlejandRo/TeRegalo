@@ -1,10 +1,10 @@
-const ControlC = {};
+const ControlCaj = {};
 const cadenaConn = process.env.DATABASE_URL || 'postgres://postgres:DevSystem@127.0.0.1:5433/TeRegalo';
 const { Client } = require('pg');
 
-ControlC.obtenerClientes = async (peticion, respuesta) => {
+ControlCaj.obtenerCajeros = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
-    const consulta = 'SELECT * FROM tbclientes;';
+    const consulta = 'SELECT * FROM tbcajeros;';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -15,25 +15,21 @@ ControlC.obtenerClientes = async (peticion, respuesta) => {
 
     await conn
             .query(consulta)
-            .then(result => respuesta.json(result.rows))
-            .catch(e => {
-                console.error('Error al generar consulta: ',e.stack)
-                respuesta.status(500).json({success: false, data: 'No se pudieron buscar los clientes: ',e})
-            })
+            .then(result => respuesta.status(200).json(result.rows))
+            .catch(e => console.error('Error al generar consulta: ',e.stack))
             .then(() => conn.end());
 };
 
-ControlC.crearCliente = async (peticion, respuesta) => {
+ControlCaj.crearCajero = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
     const data = {
+        cajeroUser: peticion.body.cajeroUser,
         nombres: peticion.body.nombres,
         apellidos: peticion.body.apellidos,
         telefono: peticion.body.telefono,
-        edad: peticion.body.edad,
-        identificacion: peticion.body.identificacion,
-        cliente: peticion.body.cliente
+        idsucursal: peticion.body.idsucursal
     }
-    const insert = 'INSERT INTO tbclientes(nombres, apellidos, telefono, edad, identificacion, cliente) VALUES($1, $2, $3, $4, $5, $6);';
+    const insert = 'INSERT INTO tbcajeros(cajeroUser, nombres, apellidos, telefono, idsucursal) VALUES($1, $2, $3, $4, $5);';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -43,19 +39,19 @@ ControlC.crearCliente = async (peticion, respuesta) => {
             });
 
     await conn
-            .query(insert, [data.nombres, data.apellidos, data.telefono, data.edad, data.identificacion, data.cliente])
-            .then(result => respuesta.json(respuesta.status(200).json({success: true, data: 'Cliente registrado exitosamente'})))
+            .query(insert, [data.cajeroUser, data.nombres, data.apellidos, data.telefono, data.idsucursal])
+            .then(result => respuesta.json(respuesta.status(200).json({success: true, data: 'Datos registrados exitosamente'})))
             .catch(e => {
                     console.error('Error al insertar nueva tarjeta: ',e.stack)
-                    respuesta.status(500).json({success: false, data: 'No se pudo registrar el cliente: ',e})
+                    respuesta.status(500).json({success: false, data: 'No se pudo registrar la tarjeta: ',e})
                 })
             .then(() => conn.end());
 };
 
-ControlC.obtenerCliente = async (peticion, respuesta) => {
+ControlCaj.obtenerCajero= async (peticion, respuesta) => {
         const conn = new Client(cadenaConn);
-        const { cliente } = peticion.params
-        const consulta = 'SELECT * FROM tbclientes WHERE cliente=($1);';
+        const { id } = peticion.params
+        const consulta = 'SELECT * FROM tbcajeros WHERE idcajero=($1);';
 
         await conn.connect()
                 .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -65,26 +61,26 @@ ControlC.obtenerCliente = async (peticion, respuesta) => {
                     });
 
         await conn
-                .query(consulta,[cliente])
+                .query(consulta,[id])
                 .then(result => respuesta.json(result.rows))
                 .catch(e => {
-                        console.error('Ocurrio un error al buscar el cliente: ',e.stack)
-                        respuesta.status(500).json({success: false, data: 'No se pudo encontrar el cliente: ',e})
+                        console.error('Ocurrio un error al buscar los datos: ',e.stack)
+                        respuesta.status(500).json({success: false, data: 'No se encontraron datos: ',e})
                     })
                 .then(() => conn.end());
 };
 
-ControlC.actualizarCliente = async (peticion, respuesta) => {
+ControlCaj.actualizarCajero = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
-    const { cliente } = peticion.params
+    const { id } = peticion.params
     const data = {
+        cajeroUser: peticion.body.cajeroUser,
         nombres: peticion.body.nombres,
         apellidos: peticion.body.apellidos,
         telefono: peticion.body.telefono,
-        edad: peticion.body.edad,
-        identificacion: peticion.body.identificacion,
+        idsucursal: peticion.body.idsucursal
     }
-    const consulta = 'UPDATE tbcliente SET nombres=($1), apellidos=($2), telefono=($3), edad=($4), identificacion=($5) WHERE cliente=($6);';
+    const update = 'UPDATE tbcajeros SET cajeroUser=($1), nombres=($2), apellidos=($3), telefono=($4), idsucursal=($5) WHERE idcajero=($6);';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -94,19 +90,19 @@ ControlC.actualizarCliente = async (peticion, respuesta) => {
             });
 
     await conn
-            .query(consulta, [data.nombres, data.apellidos, data.telefono, data.edad, data.identificacion, cliente])
-            .then(result => respuesta.status(200).json({success: true, data: 'Tarjeta actualizada correctamente'}))
+            .query(update, [data.cajeroUser, data.nombres, data.apellidos, data.telefono, data.idsucursal, id])
+            .then(result => respuesta.status(200).json({success: true, data: 'Los datos se actualizaron correctamente'}))
             .catch(e => {
                     console.error('Error al actualizar tarjeta ',e.stack)
-                    respuesta.status(500).json({success: false, data: 'No se pudo actualizar los datos de la tarjeta: ',e})
+                    respuesta.status(500).json({success: false, data: 'No se pudo actualizar los datos: ',e})
                 })
             .then(() => conn.end());
 };
 
-ControlC.eliminarCliente = async (peticion, respuesta) => {
+ControlCaj.eliminarCajero = async (peticion, respuesta) => {
     const conn = new Client(cadenaConn);
-    const { cliente } = peticion.params
-    const consulta = 'DELETE FROM tbcliente WHERE cliente=($1);';
+    const { id } = peticion.params
+    const consulta = 'DELETE FROM tbcajeros WHERE idcajero=($1);';
 
     await conn.connect()
             .then(connect => console.log('Conectado exitosamente a la base de datos'))
@@ -116,13 +112,13 @@ ControlC.eliminarCliente = async (peticion, respuesta) => {
             });
 
     await conn
-            .query(consulta, [cliente])
-            .then(result => respuesta.status(200).json({ success: true, data: 'El cliente fue eliminado correctamente' }))
+            .query(consulta, [id])
+            .then(result => respuesta.status(200).json({ success: true, data: 'El cajero fue eliminado correctamente' }))
             .catch(e => {
                     console.error('Error al generar consulta: ',e.stack)
-                    respuesta.status(500).json({success: false, data: 'No se pudo elminar:',e})
+                    respuesta.status(500).json({success: false, data: 'No se pudo elminar el cajero: ',e})
                 })
             .then(() => conn.end());
 };
 
-module.exports = ControlC;
+module.exports = ControlCaj;

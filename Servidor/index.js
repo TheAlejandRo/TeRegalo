@@ -13,6 +13,11 @@ app.use(express.json());
 
 //Rutas
 app.use(require('./Rutas/tarjetas.rutas'));
+app.use(require('./Rutas/transacciones.rutas'));
+app.use(require('./Rutas/cajeros.rutas'));
+app.use(require('./Rutas/sucursales.rutas'));
+app.use(require('./Rutas/socios.rutas'));
+app.use(require('./Rutas/clientes.rutas'));
 
 //Inicialización de servidor
 app.listen(app.get('port'), () => {
