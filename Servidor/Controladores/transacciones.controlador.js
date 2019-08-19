@@ -86,5 +86,4 @@ ControlTra.obtenerTransaccion = async (peticion, respuesta) => {
                 .then(() => conn.end());
 };
 
-
 module.exports = ControlTra;
